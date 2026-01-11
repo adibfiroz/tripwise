@@ -60,7 +60,7 @@ export default function HomeClient({
                         >
                             <div className="flex justify-between items-start mb-4">
                                 <h3 className="text-xl font-bold text-slate-800 group-hover:text-indigo-600">{trip.name}</h3>
-                                <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); setSelectedTrip(trip); setIsCreatingTrip(true); }} className="text-slate-300 cursor-pointer hover:text-blue-500 opacity-0 group-hover:opacity-100 transition-all">
+                                <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); setSelectedTrip(trip); setIsCreatingTrip(true); }} className="text-blue-500 md:text-slate-300 cursor-pointer hover:text-blue-500 md:opacity-0 group-hover:opacity-100 transition-all">
                                     <Edit size={18} />
                                 </button>
                             </div>
