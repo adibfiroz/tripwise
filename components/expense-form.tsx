@@ -44,7 +44,10 @@ const ExpenseForm = ({
         setIsSubmitting(true);
         try {
             // await new Promise((resolve) => setTimeout(resolve, 3000));
-            const expenseExists = allExpenses?.some((element: any) => element.description.toLowerCase() === formData.description.toLowerCase().trim());
+            const expenseExists = allExpenses?.some((element: any) =>
+                element.description.toLowerCase().trim() === formData.description.toLowerCase().trim() &&
+                element.id !== expense?.id
+            );
             if (expenseExists) {
                 setIsSubmitting(false);
                 toast.error(`Expense name Already exist!`);

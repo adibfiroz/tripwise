@@ -100,7 +100,7 @@ const TripForm = ({
                         <X size={20} />
                     </button>
                 </div>
-                <div className="p-8 space-y-5">
+                <div className="p-4 md:p-8 space-y-5">
                     <div>
                         <label className="text-xs font-bold uppercase text-slate-400 mb-2 block tracking-widest">Trip Name</label>
                         <input value={tripName} onChange={e => setTripName(e.target.value)} placeholder="e.g. Nagpur trip" className="w-full bg-slate-50 border-indigo-100 border-2  focus:border-indigo-500 py-2 placeholder:text-zinc-400 text-black px-4 rounded-lg outline-none" required />
@@ -121,7 +121,7 @@ const TripForm = ({
                             <input
                                 value={newParticipant} onChange={e => setNewParticipant(e.target.value)}
                                 onKeyDown={e => e.key === 'Enter' && handleAddParticipant(e)}
-                                className="flex-1 px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-black outline-none"
+                                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-black outline-none"
                                 placeholder="Add person name..."
                             />
                             <button onClick={handleAddParticipant} className="bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700">Add</button>

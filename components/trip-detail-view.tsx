@@ -62,7 +62,7 @@ const TripDetailView = ({
                     <Link href={`/`} className="flex items-center gap-2 text-slate-500 hover:text-indigo-600 mb-4 transition-colors">
                         <ArrowLeft size={20} /> Back to Dashboard
                     </Link>
-                    <div className="flex justify-between items-end">
+                    <div className="flex justify-between gap-5 flex-wrap items-end">
                         <div>
                             <h1 className="text-3xl font-black text-slate-900">{trip.name}</h1>
                             <p className="text-slate-500 font-medium mt-1">Group Pot: ₹{trip.expenses.reduce((s: any, e: any) => s + e.amount, 0).toFixed(2)}</p>
