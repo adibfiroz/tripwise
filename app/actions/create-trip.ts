@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+import prismadb from "@/lib/prisma";
 
 interface ICreateTripParams {
   name: string;
@@ -12,7 +12,7 @@ interface ICreateTripParams {
 export default async function CreateTrip(params: ICreateTripParams) {
   try {
     // Implementation for creating a trip
-    const trip = await prisma.trip.create({
+    const trip = await prismadb.trip.create({
       data: {
         name: params.name,
         startDate: new Date(params.startDate),

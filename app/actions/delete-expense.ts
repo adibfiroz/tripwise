@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+import prismadb from "@/lib/prisma";
 
 interface IDeleteExpenseParams {
   expenseId: string;
@@ -8,7 +8,7 @@ interface IDeleteExpenseParams {
 
 export default async function DeleteExpense(params: IDeleteExpenseParams) {
   try {
-    await prisma.expense.delete({
+    await prismadb.expense.delete({
       where: {
         id: params.expenseId,
       },

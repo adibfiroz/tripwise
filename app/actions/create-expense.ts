@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+import prismadb from "@/lib/prisma";
 
 interface ICreateExpenseParams {
   tripId: string;
@@ -13,7 +13,7 @@ interface ICreateExpenseParams {
 export default async function CreateExpense(params: ICreateExpenseParams) {
   try {
     // Implementation for creating a expense
-    const expense = await prisma.expense.create({
+    const expense = await prismadb.expense.create({
       data: {
         tripId: params.tripId,
         description: params.description,

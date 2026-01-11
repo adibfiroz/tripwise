@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+import prismadb from "@/lib/prisma";
 
 interface IUpdateExpenseParams {
   expenseId: string;
@@ -13,7 +13,7 @@ interface IUpdateExpenseParams {
 export default async function UpdateExpense(params: IUpdateExpenseParams) {
   try {
     // Implementation for updating a expense
-    const expense = await prisma.expense.update({
+    const expense = await prismadb.expense.update({
       where: {
         id: params.expenseId,
       },

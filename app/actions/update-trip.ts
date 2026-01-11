@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+import prismadb from "@/lib/prisma";
 
 interface IUpdateTripParams {
   id: string;
@@ -12,7 +12,7 @@ interface IUpdateTripParams {
 
 export default async function UpdateTrip(params: IUpdateTripParams) {
   try {
-    const trip = await prisma.trip.update({
+    const trip = await prismadb.trip.update({
       where: {
         id: params.id,
       },

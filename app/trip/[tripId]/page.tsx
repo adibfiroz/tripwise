@@ -1,8 +1,8 @@
 import ClientOnly from '@/components/ClientOnly';
 import TripDetailView from '@/components/trip-detail-view';
-import { prisma } from '@/lib/prisma';
-import React from 'react'
+import prismadb from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
 interface IParams {
     tripId?: string;
 }
@@ -13,7 +13,7 @@ const Page = async ({ params }: { params: IParams }) => {
 
     const tripId = resolvedParams.tripId;
 
-    const trip = await prisma.trip.findUnique({
+    const trip = await prismadb.trip.findUnique({
         where: {
             id: tripId
         },

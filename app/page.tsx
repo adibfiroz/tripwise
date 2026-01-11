@@ -1,9 +1,11 @@
 import ClientOnly from '@/components/ClientOnly'
 import HomeClient from '@/components/home-client'
-import { prisma } from '@/lib/prisma'
+import prismadb from '@/lib/prisma'
+
+export const dynamic = 'force-dynamic';
 
 const Home = async () => {
-  const trips = await prisma.trip.findMany({
+  const trips = await prismadb.trip.findMany({
     orderBy: {
       createdAt: 'desc',
     },
