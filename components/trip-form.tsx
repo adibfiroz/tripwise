@@ -1,7 +1,7 @@
 import CreateTrip from '@/app/actions/create-trip';
 import UpdateTrip from '@/app/actions/update-trip';
-import { Trip } from '@/generated/prisma/client';
-import { Loader, Loader2, LoaderCircle, X } from 'lucide-react';
+import { Trip } from '@prisma/client';
+import { Loader, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { use, useState, useEffect } from 'react'
 import toast from 'react-hot-toast';

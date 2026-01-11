@@ -1,6 +1,6 @@
 import CreateExpense from '@/app/actions/create-expense';
 import UpdateExpense from '@/app/actions/update-expense';
-import { Expense, Trip } from '@/generated/prisma/client';
+import { Expense, Trip } from '@prisma/client';
 import { Loader, Save, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'

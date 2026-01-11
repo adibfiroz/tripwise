@@ -1,12 +1,11 @@
 'use client';
 
-
-import { Expense, Trip } from '@/generated/prisma/client';
 import { ArrowLeft, ArrowRightLeft, ChevronRight, Edit2, Plus, Receipt, Trash2, X } from 'lucide-react';
 import React, { useMemo, useState } from 'react'
 import ExpenseForm from './expense-form';
 import Link from 'next/link';
 import ExpenseDeleteModal from './expense-delete-modal';
+import { Expense, Trip } from '@prisma/client';
 
 interface TripDetailViewProps {
     trip: Trip & {

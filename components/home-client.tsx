@@ -5,8 +5,8 @@ import {
     Plus, Calendar, Users, Edit
 } from 'lucide-react';
 import TripForm from './trip-form';
-import { Trip } from '@/generated/prisma/client';
 import Link from 'next/link';
+import { Trip } from '@prisma/client';
 
 interface HomeClientProps {
     trips: Trip[]

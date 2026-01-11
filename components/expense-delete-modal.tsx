@@ -1,5 +1,5 @@
 import DeleteExpense from '@/app/actions/delete-expense'
-import { Expense } from '@/generated/prisma/client'
+import { Expense } from '@prisma/client'
 import { Loader } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
