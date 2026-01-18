@@ -1,24 +1,35 @@
 import CreateTrip from '@/app/actions/create-trip';
 import UpdateTrip from '@/app/actions/update-trip';
-import { Trip } from '@prisma/client';
-import { Loader, X } from 'lucide-react';
+import { SafeUser } from '@/app/types';
+import { Expense, Trip } from '@prisma/client';
+import { Info, Loader, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { use, useState, useEffect } from 'react'
 import toast from 'react-hot-toast';
-
+import { twMerge } from 'tailwind-merge';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 interface TripFormProps {
     onClose: () => void
-    trip?: Trip | null
+    trip?: Trip & { expenses: Expense } | any
+    currentUser?: SafeUser | null
 }
 const TripForm = ({
     onClose,
-    trip
+    trip,
+    currentUser
 }: TripFormProps) => {
 
     const [tripName, setTripName] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
-    const [participants, setParticipants] = useState<string[]>([]);
+    const [participants, setParticipants] = useState<string[]>([currentUser?.name!]);
     const [newParticipant, setNewParticipant] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -85,6 +96,13 @@ const TripForm = ({
     }
 
 
+    const getUniqueSplitBetween = (expenses: { splitBetween: string[] }[]) => {
+        return [...new Set(expenses?.flatMap(e => e.splitBetween))];
+    }
+
+    const users = getUniqueSplitBetween(trip?.expenses);
+
+
     return (
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
             <form
@@ -100,7 +118,7 @@ const TripForm = ({
                         <X size={20} />
                     </button>
                 </div>
-                <div className="p-4 md:p-8 space-y-5">
+                <div className="p-4 md:p-6 space-y-5 max-h-[60vh] overflow-y-auto">
                     <div>
                         <label className="text-xs font-bold uppercase text-slate-400 mb-2 block tracking-widest">Trip Name</label>
                         <input value={tripName} onChange={e => setTripName(e.target.value)} placeholder="e.g. Nagpur trip" className="w-full bg-slate-50 border-indigo-100 border-2  focus:border-indigo-500 py-2 placeholder:text-zinc-400 text-black px-4 rounded-lg outline-none" required />
@@ -116,7 +134,19 @@ const TripForm = ({
                         </div>
                     </div>
                     <div className="">
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Participants</label>
+                        <label className=" text-sm flex items-center gap-1 font-medium text-slate-700 mb-1">
+                            Participants
+                            {isEditing &&
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger className=' outline-none '>
+                                        <Info size={16} />
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align='start'>
+                                        <DropdownMenuLabel>some of the members cannot be removed, <br />  because  they're involved in an expense</DropdownMenuLabel>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            }
+                        </label>
                         <div className="flex gap-2 mb-2">
                             <input
                                 value={newParticipant} onChange={e => setNewParticipant(e.target.value)}
@@ -124,13 +154,15 @@ const TripForm = ({
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-black outline-none"
                                 placeholder="Add person name..."
                             />
-                            <button onClick={handleAddParticipant} className="bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700">Add</button>
+                            <button type="button" onClick={handleAddParticipant} className="bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700">Add</button>
                         </div>
                         <div className="flex flex-wrap gap-2">
                             {participants.map(p => (
-                                <span key={p} className="inline-flex items-center gap-1 bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full text-sm border border-indigo-100">
+                                <span key={p} className={twMerge("inline-flex items-center gap-1 bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full text-sm border border-indigo-100",
+                                    (isEditing && users?.includes(p)) && "opacity-60 cursor-not-allowed"
+                                )}>
                                     {p}
-                                    <button onClick={() => removeParticipant(p)} className="hover:text-red-500"><X size={14} /></button>
+                                    <button type="button" disabled={isEditing && users?.includes(p)} onClick={() => removeParticipant(p)} className="hover:text-red-500 disabled:opacity-50 disabled:cursor-not-allowed"><X size={14} /></button>
                                 </span>
                             ))}
                         </div>

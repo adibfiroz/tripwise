@@ -84,7 +84,7 @@ const ExpenseForm = ({
                     <h3 className="font-black text-slate-800 text-xl">{expense ? 'Edit Expense' : 'New Expense'}</h3>
                     <button onClick={onClose} className="p-2 hover:bg-white text-zinc-800 cursor-pointer rounded-full"><X size={20} /></button>
                 </div>
-                <div className="p-4 md:p-6 space-y-6 max-h-[70vh] overflow-y-auto">
+                <div className="p-4 md:p-6 space-y-6 max-h-[60vh] overflow-y-auto">
                     <div className="grid grid-cols-2 gap-6">
                         <div className="col-span-2">
                             <label className="text-xs font-bold uppercase text-slate-400 mb-2 block tracking-widest">Description</label>
@@ -106,10 +106,11 @@ const ExpenseForm = ({
                         <div>
                             <label className="text-xs font-bold uppercase text-slate-400 mb-2 block tracking-widest">Paid By</label>
                             <select
-                                className="w-full bg-slate-50 border-indigo-100 border-2  focus:border-indigo-500 py-2 h-11 placeholder:text-zinc-400 text-black px-4 rounded-lg outline-none"
+                                disabled={expense ? true : false}
+                                className="w-full disabled:opacity-50 bg-slate-50 border-indigo-100 border-2  focus:border-indigo-500 py-2 h-11 placeholder:text-zinc-400 text-black px-4 rounded-lg outline-none"
                                 value={formData.paidBy} onChange={e => setFormData({ ...formData, paidBy: e.target.value })}
                             >
-                                {trip.participants.map((p: string) => <option key={p}>{p}</option>)}
+                                {formData.splitBetween.map((p: string) => <option key={p}>{p}</option>)}
                             </select>
                         </div>
                     </div>
@@ -120,8 +121,9 @@ const ExpenseForm = ({
                             {trip.participants.map((p: string) => (
                                 <button
                                     key={p}
+                                    disabled={p === formData.paidBy}
                                     onClick={() => handleToggleParticipant(p)}
-                                    className={`px-4 py-2 cursor-pointer rounded-xl text-sm font-bold transition-all border-2 ${formData.splitBetween.includes(p)
+                                    className={`px-4 py-2 disabled:opacity-50 cursor-pointer rounded-xl text-sm font-bold transition-all border-2 ${formData.splitBetween.includes(p)
                                         ? 'bg-indigo-600 border-indigo-600 text-white shadow-md shadow-indigo-100'
                                         : 'bg-white border-slate-100 text-slate-400'
                                         }`}

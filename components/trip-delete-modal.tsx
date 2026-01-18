@@ -1,19 +1,19 @@
-import DeleteExpense from '@/app/actions/delete-expense'
-import { Expense } from '@prisma/client'
+import DeleteTrip from '@/app/actions/delete-trip'
+import { Trip } from '@prisma/client'
 import { Loader } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 
-interface ExpenseDeleteModalProps {
+interface TripDeleteModalProps {
     onClose: () => void
-    selectedExpense: Expense
+    selectedTrip: Trip
 }
 
-const ExpenseDeleteModal = ({
+const TripDeleteModal = ({
     onClose,
-    selectedExpense
-}: ExpenseDeleteModalProps) => {
+    selectedTrip
+}: TripDeleteModalProps) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter();
@@ -22,11 +22,11 @@ const ExpenseDeleteModal = ({
         setIsLoading(true)
         try {
             //await new Promise((resolve) => setTimeout(resolve, 3000));
-            await DeleteExpense({ expenseId: selectedExpense.id })
+            await DeleteTrip({ tripId: selectedTrip.id })
             setIsLoading(false)
             onClose()
             router.refresh()
-            toast.success("Expense Deleted")
+            toast.success("Trip Deleted")
         } catch (error) {
             setIsLoading(false)
             toast.error("Something went wrong")
@@ -36,7 +36,8 @@ const ExpenseDeleteModal = ({
     return (
         <div className='fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4'>
             <div className='bg-white w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95'>
-                <div className='text-center py-5 text-xl text-black'>Delete {selectedExpense.description} Expense</div>
+                <div className='text-center pt-5 text-xl font-medium text-black'>Delete {selectedTrip.name} Trip</div>
+                <p className='px-4 pt-1 text-center text-gray-700'>All Expenses in this trip <br /> will also be deleted</p>
                 <div className='flex justify-center gap-5 my-5'>
                     <button onClick={onClose} disabled={isLoading} className='bg-black disabled:opacity-50 cursor-pointer text-white p-2 px-4 rounded-lg'>No</button>
                     <button onClick={handleDelete} disabled={isLoading} className='bg-red-500 disabled:opacity-50 cursor-pointer text-white p-2 px-4 rounded-lg'>
@@ -52,4 +53,4 @@ const ExpenseDeleteModal = ({
     )
 }
 
-export default ExpenseDeleteModal
+export default TripDeleteModal

@@ -1,12 +1,20 @@
 'use client';
 
-import { ArrowLeft, ArrowRightLeft, ChevronRight, Edit2, Plus, Receipt, Trash2, X } from 'lucide-react';
+import { ArrowLeft, ArrowRightLeft, ChevronRight, Dot, Edit2, Plus, Receipt, Share, Share2, Trash2, X } from 'lucide-react';
 import React, { useMemo, useState } from 'react'
 import ExpenseForm from './expense-form';
 import Link from 'next/link';
 import ExpenseDeleteModal from './expense-delete-modal';
 import { Expense, Trip } from '@prisma/client';
-
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import toast from 'react-hot-toast';
 interface TripDetailViewProps {
     trip: Trip & {
         expenses: Expense[]
@@ -55,16 +63,31 @@ const TripDetailView = ({
         setShowDeleteExpenseModal(true)
     }
 
+    const handleCopy = async () => {
+        await navigator.clipboard.writeText(window.location.href);
+        toast.success("Link copied");
+    };
+
     return (
         <div className='min-h-screen bg-slate-50 pb-12'>
             <div className="bg-white border-b sticky top-0 z-20">
-                <div className="max-w-5xl mx-auto px-6 py-4">
-                    <Link href={`/`} className="flex items-center gap-2 text-slate-500 hover:text-indigo-600 mb-4 transition-colors">
-                        <ArrowLeft size={20} /> Back to Dashboard
-                    </Link>
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
+                    <div className='flex justify-between gap-4 flex-wrap'>
+                        <Link href={`/`} className="flex items-center gap-2 text-slate-500 hover:text-indigo-600 mb-2 transition-colors">
+                            <ArrowLeft size={20} />Go Back
+                        </Link>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger className=' outline-none cursor-pointer'>
+                                <Share2 className='text-gray-600' />
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align='end'>
+                                <DropdownMenuItem onClick={handleCopy} className=' cursor-pointer'>Copy Link</DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
                     <div className="flex justify-between gap-5 flex-wrap items-end">
                         <div>
-                            <h1 className="text-3xl font-black text-slate-900">{trip.name}</h1>
+                            <h1 className="text-2xl md:text-3xl font-black text-slate-900">{trip.name}</h1>
                             <p className="text-slate-500 font-medium mt-1">Group Pot: ₹{trip.expenses.reduce((s: any, e: any) => s + e.amount, 0).toFixed(2)}</p>
                         </div>
                         <div className="flex bg-slate-100 p-1 rounded-xl">
@@ -81,10 +104,10 @@ const TripDetailView = ({
                 </div>
             </div>
 
-            <div className="max-w-5xl mx-auto p-6">
+            <div className="max-w-5xl mx-auto p-4 sm:p-6">
                 {activeTab === 'expenses' ? (
                     <div className="space-y-6">
-                        <div className="flex justify-between items-center">
+                        <div className="flex justify-between flex-wrap gap-4 items-center">
                             <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
                                 <Receipt size={22} className="text-indigo-600" />
                                 Activities & Costs
@@ -93,7 +116,7 @@ const TripDetailView = ({
                                 onClick={() => { setEditingExpense(null); setShowExpenseForm(true); }}
                                 className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 shadow-md hover:bg-indigo-700 transition-all"
                             >
-                                <Plus size={18} /> Add Expense
+                                <Plus className='hidden sm:block' size={18} /> Add Expense
                             </button>
                         </div>
 
@@ -117,12 +140,15 @@ const TripDetailView = ({
                                             <div className="flex-1">
                                                 <h4 className="font-bold text-slate-800 text-lg leading-tight">{exp.description}</h4>
 
-                                                <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500 mt-1">
+                                                <div className="flex flex-wrap items-center text-xs text-slate-500 mt-1">
                                                     {exp.category && <span className="font-bold text-indigo-600 uppercase bg-indigo-50 px-1.5 py-0.5 rounded">
                                                         {exp.category}
                                                     </span>}
                                                     {/* <span className="hidden sm:inline">•</span> */}
                                                     <span>Paid by <b className='text-gray-600'>{exp.paidBy}</b></span>
+                                                    <Dot />
+                                                    <span>{new Date(trip.createdAt).toLocaleDateString()}</span>
+
                                                 </div>
 
                                                 {/* Split Users - Wrap nicely on small screens */}
@@ -204,7 +230,7 @@ const TripDetailView = ({
                                     <div key={name}>
                                         <div className="flex justify-between text-sm mb-2">
                                             <span className="font-bold text-slate-700">{name}</span>
-                                            <span className={`font-black ${bal >= 0 ? 'text-emerald-600' : 'text-rose-500'}`}>
+                                            <span className={`font-black ${bal >= 0 ? 'text-emerald-600' : 'text-rose-500'}`}>{bal >= 0 ? 'cr' : 'db'} &nbsp;
                                                 {bal >= 0 ? '+' : ''}₹{bal.toFixed(2)}
                                             </span>
                                         </div>
