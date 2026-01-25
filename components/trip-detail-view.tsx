@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowLeft, ArrowRightLeft, ChevronRight, Dot, Edit2, Plus, Receipt, Share, Share2, Trash2, X } from 'lucide-react';
+import { ArrowLeft, ArrowRightLeft, ChevronRight, Dot, Edit2, Plus, Receipt, Share, Share2, Trash2, Users, X } from 'lucide-react';
 import React, { useMemo, useState } from 'react'
 import ExpenseForm from './expense-form';
 import Link from 'next/link';
@@ -88,7 +88,14 @@ const TripDetailView = ({
                     <div className="flex justify-between gap-5 flex-wrap items-end">
                         <div>
                             <h1 className="text-2xl md:text-3xl font-black text-slate-900">{trip.name}</h1>
-                            <p className="text-slate-500 font-medium mt-1">Group Pot: ₹{trip.expenses.reduce((s: any, e: any) => s + e.amount, 0).toFixed(2)}</p>
+                            <div className="flex items-center ">
+                                <p className="text-slate-500 font-medium mt-1">Group Pot: ₹{trip.expenses.reduce((s: any, e: any) => s + e.amount, 0).toFixed(2)}</p>
+                                <Dot />
+                                <div className='flex items-center gap-1 text-slate-500 '>
+                                    <span>{trip.participants.length}</span>
+                                    <Users size={16} />
+                                </div>
+                            </div>
                         </div>
                         <div className="flex bg-slate-100 p-1 rounded-xl">
                             <button
@@ -230,8 +237,9 @@ const TripDetailView = ({
                                     <div key={name}>
                                         <div className="flex justify-between text-sm mb-2">
                                             <span className="font-bold text-slate-700">{name}</span>
-                                            <span className={`font-black ${bal >= 0 ? 'text-emerald-600' : 'text-rose-500'}`}>{bal >= 0 ? 'cr' : 'db'} &nbsp;
+                                            <span className={`font-black ${bal >= 0 ? 'text-emerald-600' : 'text-rose-500'}`}>
                                                 {bal >= 0 ? '+' : ''}₹{bal.toFixed(2)}
+                                                &nbsp; {bal >= 0 ? 'cr' : 'db'}
                                             </span>
                                         </div>
                                         <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
