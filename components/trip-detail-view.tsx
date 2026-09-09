@@ -88,13 +88,21 @@ const TripDetailView = ({
                     <div className="flex justify-between gap-5 flex-wrap items-end">
                         <div>
                             <h1 className="text-2xl md:text-3xl font-black text-slate-900">{trip.name}</h1>
-                            <div className="flex items-center ">
-                                <p className="text-slate-500 font-medium mt-1">Group Pot: ₹{trip.expenses.reduce((s: any, e: any) => s + e.amount, 0).toFixed(2)}</p>
+                            <div className="flex items-center mt-1">
+                                <p className="text-slate-500 font-medium">Total:
+                                    <span className='text-indigo-600 ml-1'>
+                                        ₹{trip.expenses.reduce((s: any, e: any) => s + e.amount, 0).toFixed(2)}
+                                    </span>
+                                </p>
                                 <Dot />
                                 <div className='flex items-center gap-1 text-slate-500 '>
                                     <span>{trip.participants.length}</span>
                                     <Users size={16} />
                                 </div>
+                                <Dot />
+                                <span className="text-indigo-600 font-medium text-base">
+                                    ₹{((trip.expenses.reduce((s: any, e: any) => s + e.amount, 0).toFixed(2)) / (trip.participants.length || 1)).toFixed(0)} per person
+                                </span>
                             </div>
                         </div>
                         <div className="flex bg-slate-100 p-1 rounded-xl">
@@ -154,7 +162,7 @@ const TripDetailView = ({
                                                     {/* <span className="hidden sm:inline">•</span> */}
                                                     <span>Paid by <b className='text-gray-600'>{exp.paidBy}</b></span>
                                                     <Dot />
-                                                    <span>{new Date(trip.createdAt).toLocaleDateString()}</span>
+                                                    <span>{(exp.createdAt).toDateString()}</span>
 
                                                 </div>
 
